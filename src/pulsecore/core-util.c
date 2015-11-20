@@ -52,8 +52,11 @@
 #include <pcreposix.h>
 #endif
 
-#ifdef HAVE_STRTOD_L
+#ifdef HAVE_LOCALE_H
 #include <locale.h>
+#endif
+
+#ifdef HAVE_XLOCALE_H
 #include <xlocale.h>
 #endif
 
@@ -106,7 +109,6 @@
 #endif
 
 #ifdef __APPLE__
-#include <xlocale.h>
 #include <mach/mach_init.h>
 #include <mach/thread_act.h>
 #include <mach/thread_policy.h>

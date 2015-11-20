@@ -203,6 +203,34 @@ static int detect_solaris(pa_core *c, int just_one) {
 }
 #endif
 
+#ifdef HAVE_NETBSD
+static int detect_netbsd(pa_core *c, int just_one) {
+    struct stat s;
+    const char *dev;
+    char args[64];
+
+    dev = getenv("AUDIODEV");
+    if (!dev)
+        dev = "/dev/audio";
+
+    if (stat(dev, &s) < 0) {
+        if (errno != ENOENT)
+            pa_log_error("failed to open device %s: %s", dev, pa_cstrerror(errno));
+        return -1;
+    }
+
+    if (!S_ISCHR(s.st_mode))
+        return 0;
+
+    pa_snprintf(args, sizeof(args), "device=%s", dev);
+
+    if (!pa_module_load(c, "module-netbsd", args))
+        return 0;
+
+    return 1;
+}
+#endif
+
 #ifdef OS_IS_WIN32
 static int detect_waveout(pa_core *c, int just_one) {
     /*
@@ -241,6 +269,9 @@ int pa__init(pa_module*m) {
 #endif
 #ifdef HAVE_SOLARIS
     if ((n = detect_solaris(m->core, just_one)) <= 0)
+#endif
+#ifdef HAVE_NETBSD
+    if ((n = detect_netbsd(m->core, just_one)) <= 0)
 #endif
 #ifdef OS_IS_WIN32
     if ((n = detect_waveout(m->core, just_one)) <= 0)

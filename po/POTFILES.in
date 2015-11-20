@@ -39,6 +39,7 @@ src/modules/module-lirc.c
 src/modules/module-match.c
 src/modules/module-mmkbd-evdev.c
 src/modules/module-native-protocol-fd.c
+src/modules/module-netbsd.c
 src/modules/module-null-sink.c
 src/modules/module-pipe-sink.c
 src/modules/module-pipe-source.c

@@ -1332,6 +1332,11 @@ modlibexec_LTLIBRARIES += \
 		module-solaris.la
 endif
 
+if HAVE_NETBSD
+modlibexec_LTLIBRARIES += \
+		module-netbsd.la
+endif
+
 if HAVE_AVAHI
 modlibexec_LTLIBRARIES += \
 		module-zeroconf-publish.la \
@@ -1471,6 +1476,7 @@ SYMDEF_FILES = \
 		module-tunnel-source-new-symdef.h \
 		module-tunnel-sink-symdef.h \
 		module-tunnel-source-symdef.h \
+		module-netbsd-symdef.h \
 		module-null-sink-symdef.h \
 		module-null-source-symdef.h \
 		module-sine-source-symdef.h \
@@ -1868,6 +1874,12 @@ module_alsa_card_la_CFLAGS = $(AM_CFLAGS) $(ASOUNDLIB_CFLAGS)
 module_solaris_la_SOURCES = modules/module-solaris.c
 module_solaris_la_LDFLAGS = $(MODULE_LDFLAGS)
 module_solaris_la_LIBADD = $(MODULE_LIBADD)
+
+# NetBSD
+
+module_netbsd_la_SOURCES = modules/module-netbsd.c
+module_netbsd_la_LDFLAGS = $(MODULE_LDFLAGS)
+module_netbsd_la_LIBADD = $(MODULE_LIBADD)
 
 # Avahi
 

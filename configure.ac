@@ -438,6 +438,7 @@ AC_CHECK_HEADERS_ONCE([windows.h winsock2.h ws2tcpip.h])
 
 # NetBSD
 AC_CHECK_HEADERS_ONCE([sys/atomic.h])
+AC_CHECK_HEADERS_ONCE([sys/audioio.h])
 
 # Other
 AC_CHECK_HEADERS_ONCE([sys/ioctl.h])
@@ -828,6 +829,21 @@ AS_IF([test "x$enable_solaris" = "xyes" && test "x$HAVE_SOLARIS" = "x0"],
 
 AM_CONDITIONAL([HAVE_SOLARIS], [test "x$HAVE_SOLARIS" = x1])
 AS_IF([test "x$HAVE_SOLARIS" = "x1"], AC_DEFINE([HAVE_SOLARIS], 1, [Have Solaris audio?]))
+
+#### NetBSD audio support (optional) ####
+
+AC_ARG_ENABLE([netbsd],
+    AS_HELP_STRING([--disable-netbsd],[Disable optional NetBSD audio support]))
+
+AS_IF([test "x$enable_netbsd" != "xno"],
+    [AC_CHECK_HEADERS([sys/audioio.h], HAVE_NETBSD=1, HAVE_NETBSD=0)],
+    HAVE_NETBSD=0)
+
+AS_IF([test "x$enable_netbsd" = "xyes" && test "x$HAVE_NETBSD" = "x0"],
+    [AC_MSG_ERROR([*** NetBSD audio support not found])])
+
+AM_CONDITIONAL([HAVE_NETBSD], [test "x$HAVE_NETBSD" = x1])
+AS_IF([test "x$HAVE_NETBSD" = "x1"], AC_DEFINE([HAVE_NETBSD], 1, [Have NetBSD audio?]))
 
 #### WaveOut audio support (optional) ####
 

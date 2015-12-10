@@ -463,6 +463,9 @@ AC_TYPE_OFF_T
 AC_TYPE_UID_T
 AC_CHECK_DECLS(environ)
 
+# Used to deduct CPU word size
+AC_CHECK_SIZEOF(void*)
+
 # SIGXCPU
 AX_CHECK_DEFINE([signal.h], [SIGXCPU], [HAVE_SIGXCPU=1], [HAVE_SIGXCPU=0])
 AS_IF([test "x$HAVE_SIGXCPU" = "x1"], AC_DEFINE([HAVE_SIGXCPU], 1, [Have SIGXCPU?]))

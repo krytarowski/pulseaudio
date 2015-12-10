@@ -93,13 +93,8 @@ int main(int argc, char *argv[]) {
     if (!getenv("MAKE_CHECK"))
         pa_log_set_level(PA_LOG_DEBUG);
 
-#if __WORDSIZE == 64 || ((ULONG_MAX) > (UINT_MAX))
-    pa_log_debug("This seems to be 64-bit code.");
-#elif  __WORDSIZE == 32
-    pa_log_debug("This seems to be 32-bit code.");
-#else
-    pa_log_debug("Don't know if this is 32- or 64-bit code.");
-#endif
+    pa_log_debug("On this platform, integer size is %zu and long size is %zu",
+            sizeof(int), sizeof(long));
 
     s = suite_create("Mult-s16");
     tc = tcase_create("mult-s16");

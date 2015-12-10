@@ -55,10 +55,6 @@ void pa_deinterleave(const void *src, void *dst[], unsigned channels, size_t ss,
 void pa_sample_clamp(pa_sample_format_t format, void *dst, size_t dstr, const void *src, size_t sstr, unsigned n);
 
 static inline int32_t pa_mult_s16_volume(int16_t v, int32_t cv) {
-#if __WORDSIZE == 64 || ((ULONG_MAX) > (UINT_MAX))
-    /* Multiply with 64 bit integers on 64 bit platforms */
-    return (v * (int64_t) cv) >> 16;
-#else
     /* Multiplying the 32 bit volume factor with the
      * 16 bit sample might result in an 48 bit value. We
      * want to do without 64 bit integers and hence do
@@ -68,7 +64,6 @@ static inline int32_t pa_mult_s16_volume(int16_t v, int32_t cv) {
     int32_t hi = cv >> 16;
     int32_t lo = cv & 0xFFFF;
     return ((v * lo) >> 16) + (v * hi);
-#endif
 }
 
 pa_usec_t pa_bytes_to_usec_round_up(uint64_t length, const pa_sample_spec *spec);

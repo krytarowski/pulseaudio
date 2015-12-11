@@ -83,6 +83,7 @@ START_TEST (rtpoll_test) {
 END_TEST
 
 int main(int argc, char *argv[]) {
+#ifdef SIGRTMIN
     int failed = 0;
     Suite *s;
     TCase *tc;
@@ -103,4 +104,9 @@ int main(int argc, char *argv[]) {
     srunner_free(sr);
 
     return (failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
+#else
+    printf("Real-time signals are not supported on this platform\n");
+
+    return EXIT_SUCCESS;
+#endif
 }

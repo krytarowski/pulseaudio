@@ -463,6 +463,12 @@ AC_TYPE_OFF_T
 AC_TYPE_UID_T
 AC_CHECK_DECLS(environ)
 
+# Portable 64bit test
+AC_CHECK_SIZEOF([void *])
+AS_IF([test $ac_cv_sizeof_void_p = 8],
+    [AC_DEFINE([HAVE_FAST_64BIT_OPERATIONS], 1, [Have CPU with fast 64-bit operations?])],
+    [])
+
 # SIGXCPU
 AX_CHECK_DEFINE([signal.h], [SIGXCPU], [HAVE_SIGXCPU=1], [HAVE_SIGXCPU=0])
 AS_IF([test "x$HAVE_SIGXCPU" = "x1"], AC_DEFINE([HAVE_SIGXCPU], 1, [Have SIGXCPU?]))

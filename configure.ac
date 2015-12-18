@@ -463,20 +463,13 @@ AC_TYPE_OFF_T
 AC_TYPE_UID_T
 AC_CHECK_DECLS(environ)
 
-AC_CHECK_SIZEOF(void*)
-
-fast_64bit_operations="no"
 # This check covers x32-ABI
-AC_CHECK_DECL([__x86_64__], [fast_64bit_operations="yes"], [], [])
-if test "x$fast_64bit_operations" = "xno"; then
-    AC_PREPROC_IFELSE([AC_LANG_SOURCE([
-#if SIZEOF_VOIDP != 8
-#error
-#endif
-])], [fast_64bit_operations="yes"], [])
-fi
+AC_CHECK_SIZEOF([long])
 
-AS_IF([test "x$fast_64bit_operations" = "xyes"], AC_DEFINE([HAVE_FAST_64BIT_OPERATIONS], 1, [Have CPU with fast 64-bit operations?])
+AS_IF([test "$ac_cv_sizeof_long" -eq 8],
+    [AC_DEFINE([OSBIT], 64, [Define to the size of a long in bits.])],
+    [AC_DEFINE([OSBIT], 32, [Define to the size of a long in bits.])]) 
+AC_CHECK_SIZEOF(void*)
 
 # SIGXCPU
 AX_CHECK_DEFINE([signal.h], [SIGXCPU], [HAVE_SIGXCPU=1], [HAVE_SIGXCPU=0])
